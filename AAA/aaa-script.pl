@@ -9,9 +9,9 @@
 use strict;
 use warnings;
 
-require 'db.pm';
+require '/home/cnxcc/kamailio/AAA/db.pm';
 
-use lib '/usr/local/lib/kamailio/perl/';
+use lib '/usr/local/lib64/kamailio/perl/';
 use Kamailio qw ( log );
 use Kamailio::Constants;
 use Kamailio::Message;
@@ -42,7 +42,6 @@ sub bill_call {
 	my $f_cost	= $m->pseudoVar('$dlg_var(f_cost)');
 	
 	my $secs_left	= $duration - $i_cost;
-	my $cost	= 0;
 	my $rounder	= $secs_left % $f_cost == 0 ? 0 : 1;
 	my $cost	= ($secs_left / $f_cost) + $rounder;
 
