@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.33, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.1.73, for redhat-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: cnxcc
 -- ------------------------------------------------------
--- Server version	5.5.33-log
+-- Server version	5.1.73
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -15,8 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE DATABASE IF NOT EXISTS cnxcc;
-USE cnxcc;
 --
 -- Table structure for table `acc`
 --
@@ -96,6 +94,35 @@ LOCK TABLES `aliases` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `call`
+--
+
+DROP TABLE IF EXISTS `call`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `call` (
+  `call_id` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `confirmed` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
+  `max_amount` decimal(12,5) DEFAULT NULL,
+  `consumed_amount` decimal(12,5) DEFAULT NULL,
+  `start_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `client_id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`call_id`),
+  KEY `FK_call_credit_data` (`client_id`),
+  CONSTRAINT `FK_call_credit_data` FOREIGN KEY (`client_id`) REFERENCES `credit_data` (`client_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `call`
+--
+
+LOCK TABLES `call` WRITE;
+/*!40000 ALTER TABLE `call` DISABLE KEYS */;
+/*!40000 ALTER TABLE `call` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `cdr`
 --
 
@@ -114,7 +141,7 @@ CREATE TABLE `cdr` (
   `to_tag` varchar(64) NOT NULL,
   `direction` varchar(8) NOT NULL,
   PRIMARY KEY (`cdr_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,6 +150,7 @@ CREATE TABLE `cdr` (
 
 LOCK TABLES `cdr` WRITE;
 /*!40000 ALTER TABLE `cdr` DISABLE KEYS */;
+INSERT INTO `cdr` VALUES (1,'1100','0981146623',19,'2014-03-27 06:10:47','0.02470','cyopsvvnmbmzxvx@caru-laptop','jfepb','1','outbound'),(2,'1100','0991123456',3,'2014-03-27 06:11:18','3.00000','eomhhpecgxlbilc@caru-laptop','jmzwn','2','outbound'),(3,'1100','0981146623',10,'2014-03-27 06:21:43','0.01300','vvnvgyzycxxpevb@caru-laptop','reykk','4','outbound'),(4,'1100','0991123456',4,'2014-03-27 06:21:56','4.00000','kfnabkhdiyrfuvv@caru-laptop','dwfyr','5','outbound'),(5,'1100','0991123456',3,'2014-03-27 06:27:04','3.00000','gbkaeclwxkilfhd@caru-laptop','qwzps','7','outbound'),(6,'1100','0981146623',88,'2014-03-27 06:46:16','0.11440','iwngbjlvbpdimtc@caru-laptop','nteru','10','outbound'),(7,'1100','0981146623',292,'2014-03-27 06:52:27','0.37960','oecvufaqqxrthld@caru-laptop','amhpg','11','outbound'),(8,'1100','0981146623',12,'2014-03-27 07:22:53','0.01560','hnogrddhnidobza@caru-laptop','jocks','13','outbound'),(9,'1100','0971123456',54,'2014-03-27 07:23:42','0.07020','mfgmxybprttzmhc@caru-laptop','gadlv','14','outbound'),(10,'1100','0971123456',18,'2014-03-27 07:23:52','0.02340','iydavwxevpqohxo@caru-laptop','zdwvu','15','outbound'),(11,'1100','0981146623',94,'2014-03-27 08:04:44','0.12220','lonuqaoqvdakrtr@caru-laptop','kgtot','11','<null>'),(12,'1100','0981146623',4,'2014-03-27 08:07:20','0.00520','blqtehawvzxcgld@caru-laptop','pgean','12','<null>'),(13,'1100','0981146623',4,'2014-03-27 08:11:46','0.00520','naxjayyekoeqeeb@caru-laptop','zpplg','13','<null>'),(14,'1100','0981146623',4,'2014-03-27 08:12:54','0.00520','ebshvyvncjlqmqv@caru-laptop','vzdfx','14','<null>'),(15,'1000','0991236457',34,'2014-03-27 08:13:59','0.04420','kmlTmxMv8cdfN.8NmEOLrh2HcOknxbI2','daB9tIJ6gyfskrgSTuK49BT3Uo31DPei','15','<null>'),(16,'1000','0991123456',10,'2014-03-27 08:15:09','5.00000','62dhKFYTCU9uke3Wgzfy1g5AG2rZtfSt','sTtQeWt-DynPkAMsNjiduwuDF36-diU0','16','outbound'),(17,'1100','0981111111',0,'2014-03-27 08:22:08','0.00000','cunnhuxdekdvdfg@caru-laptop','ewmhz','21','outbound'),(18,'1100','0981111111',0,'2014-03-27 08:24:54','0.00000','agoutcnscemavwm@caru-laptop','uaxxh','22','outbound'),(19,'1100','0981111111',0,'2014-03-27 08:25:44','0.00000','rlzyvmajeovsyyb@caru-laptop','lxhhy','24','outbound'),(20,'1000','0981123456',49,'2014-03-27 08:26:11','0.06370','aNRq7TfeR61cHl2rgfcVATZe--30ddXt','.ETTD1j8X3IeR83UpbEsjMtxri0aakiX','23','outbound'),(21,'1100','0981111111',0,'2014-03-27 08:28:05','0.00000','rjojpghjwwbkohw@caru-laptop','pvipu','25','outbound'),(22,'1100','0981111111',0,'2014-03-27 08:36:27','0.00000','fccwomwyuzsqmnd@caru-laptop','sngwx','26','outbound'),(23,'1100','0981111111',0,'2014-03-27 08:36:57','0.00000','dujqfvxcwivlzlw@caru-laptop','sbftg','27','outbound'),(24,'1100','0981111111',0,'2014-03-27 08:37:40','0.00000','vyvhqdqrnkrnixi@caru-laptop','ncycj','28','<null>'),(25,'1000','0981146623',27,'2014-03-27 08:44:31','0.03510','SjpJ.vmNDvCC2ZwivFD0FBTRpcGaboA.','46CFxhifEJmfVVt9JvogX43qA-BQ4-dd','30','outbound'),(26,'1000','0981123456',18,'2014-03-27 08:48:05','0.02340','p16H6hxCsbOUQ0OUo3fbKHR7OpIY8WNn','8zh5TrxU5wxnqN4HmGODmlUdcGKyu3Rm','31','outbound'),(27,'1100','0981111111',0,'2014-03-27 08:50:15','0.00000','xxswuxsbfagldtm@caru-laptop','rxomb','32','outbound');
 /*!40000 ALTER TABLE `cdr` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,8 +212,37 @@ CREATE TABLE `credit` (
 
 LOCK TABLES `credit` WRITE;
 /*!40000 ALTER TABLE `credit` DISABLE KEYS */;
-INSERT INTO `credit` VALUES ('5951000',4.70924,'2013-03-26 13:17:19'),('5951001',0.00000,'2013-03-23 18:53:32'),('5951002',4.81822,'2013-03-29 15:43:06'),('5951003',9.59087,'2013-03-27 21:06:32'),('5951004',66.00000,'2013-04-11 00:28:51'),('5951006',9.79070,'2013-03-25 14:04:40'),('5951007',3.65580,'2013-03-25 14:50:27'),('5951008',7.89530,'2013-03-25 04:04:35'),('5951010',5.00000,'2013-03-25 04:04:29'),('5951017',4.40460,'2013-03-25 14:03:31'),('5951018',4.79980,'2013-03-26 20:12:08'),('5951026',3.54890,'2013-04-05 15:00:52'),('5951027',4.97270,'2013-03-26 14:01:00'),('5951029',4.98636,'2013-04-03 20:04:37'),('5951030',0.39000,'2013-04-03 05:38:08'),('5951031',0.39000,'2013-04-12 13:54:20'),('5951032',0.39000,'2013-04-12 14:04:16'),('5951033',0.39000,'2013-04-12 14:11:10');
+INSERT INTO `credit` VALUES ('1000','9.92200','0000-00-00 00:00:00'),('1100','0.24730','2014-03-27 05:49:23');
 /*!40000 ALTER TABLE `credit` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `credit_data`
+--
+
+DROP TABLE IF EXISTS `credit_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `credit_data` (
+  `credit_data_id` int(11) NOT NULL AUTO_INCREMENT,
+  `max_amount` decimal(12,5) DEFAULT '0.00000',
+  `consumed_amount` decimal(12,5) DEFAULT '0.00000',
+  `number_of_calls` int(11) DEFAULT '0',
+  `concurrent_calls` int(11) DEFAULT '0',
+  `credit_type_id` int(11) DEFAULT NULL,
+  `client_id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`credit_data_id`),
+  UNIQUE KEY `client_id_unique` (`client_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `credit_data`
+--
+
+LOCK TABLES `credit_data` WRITE;
+/*!40000 ALTER TABLE `credit_data` DISABLE KEYS */;
+/*!40000 ALTER TABLE `credit_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -200,18 +257,11 @@ CREATE TABLE `customers` (
   `subscriber` varchar(64) DEFAULT NULL,
   `firstname` varchar(100) NOT NULL,
   `lastname` varchar(100) NOT NULL,
-  `password` varchar(50) NOT NULL DEFAULT '123456',
-  `email` varchar(255) NOT NULL,
-  `type` tinyint(1) NOT NULL,
-  `activate` varchar(20) NOT NULL,
-  `status` tinyint(1) NOT NULL,
   `country` varchar(80) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_email` (`email`),
   UNIQUE KEY `unique_subscriber` (`subscriber`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,61 +270,9 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+INSERT INTO `customers` VALUES (3,'1100','Carlos','Ruiz Diaz','PY','2014-03-27 05:48:22');
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `tri_get_subscriber_number` BEFORE INSERT ON `customers` 
-    FOR EACH ROW BEGIN
-    
-	declare v_subscriber varchar(7);
-
-	SELECT MAX(subscriber) + 1 into v_subscriber FROM customers;
-		
-	
-	if v_subscriber is null then
-		SELECT MAX(username) + 1 INTO v_subscriber FROM subscriber WHERE username <> 'frompstn';
-	end if;
-	
-	set new.subscriber = v_subscriber;
-	
-    END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `tri_create_subscriber_on_activation` AFTER UPDATE ON `customers` 
-    FOR EACH ROW BEGIN
-	if old.status <> 0 and new.status = 0 then
-		insert into subscriber values(NULL, new.subscriber, 'sip.sigapy.com', 
-								new.password, new.email, 
-								md5(concat(new.subscriber, ':sip.sigapy.com:', new.password)),
-								md5(CONCAT(new.subscriber, '@sip.sigapy.com:sip.sigapy.com:', new.password)), NULL);
-	end if;
-	
-    END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `dialog`
@@ -405,7 +403,7 @@ CREATE TABLE `location` (
   `reg_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `account_contact_idx` (`username`,`domain`,`contact`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -414,7 +412,58 @@ CREATE TABLE `location` (
 
 LOCK TABLES `location` WRITE;
 /*!40000 ALTER TABLE `location` DISABLE KEYS */;
+INSERT INTO `location` VALUES (9,'uloc-5333d0f4-512b-1','1000',NULL,'sip:1000@201.141.236.38:49411;ob','sip:201.141.236.38:49411',NULL,'2014-03-27 04:53:54',-1.00,'U-MChsoNhNAL8ANraL2RC58FCgZcUYv-',28420,'2014-03-27 04:38:54',0,64,'CSipSimple_GT-I9100-16/r2330','udp:107.170.102.188:5070',8159,NULL,0),(5,'uloc-533360a4-eb9-3','1100',NULL,'sip:1100@192.168.3.102:5062','sip:201.141.236.38:43634',NULL,'2014-03-27 05:40:11',-1.00,'hjlzohhrdfdbkwl@caru-laptop',462,'2014-03-27 04:40:11',0,64,'Twinkle/1.4.2','udp:107.170.102.188:5070',6111,NULL,0);
 /*!40000 ALTER TABLE `location` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `money_based_call`
+--
+
+DROP TABLE IF EXISTS `money_based_call`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `money_based_call` (
+  `call_id` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `cost_per_second` decimal(10,6) NOT NULL,
+  `initial_pulse` int(11) NOT NULL,
+  `final_pulse` int(11) NOT NULL,
+  PRIMARY KEY (`call_id`),
+  CONSTRAINT `FK_money_based_call_callid` FOREIGN KEY (`call_id`) REFERENCES `call` (`call_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `money_based_call`
+--
+
+LOCK TABLES `money_based_call` WRITE;
+/*!40000 ALTER TABLE `money_based_call` DISABLE KEYS */;
+/*!40000 ALTER TABLE `money_based_call` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `permission`
+--
+
+DROP TABLE IF EXISTS `permission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `permission` (
+  `permission_id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`permission_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `permission`
+--
+
+LOCK TABLES `permission` WRITE;
+/*!40000 ALTER TABLE `permission` DISABLE KEYS */;
+INSERT INTO `permission` VALUES (1,'Admin'),(2,'Basic'),(3,'Basic + Can Drop Calls');
+/*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -427,12 +476,9 @@ DROP TABLE IF EXISTS `price`;
 CREATE TABLE `price` (
   `subscriber` varchar(64) NOT NULL,
   `prefix` varchar(30) NOT NULL,
-  `initial_pulse` int(11) NOT NULL,
-  `final_pulse` int(11) NOT NULL,
-  `inbound_call_cps` decimal(10,5) NOT NULL,
+  `initial_cost` int(11) NOT NULL,
+  `final_cost` int(11) NOT NULL,
   `outbound_call_cps` decimal(10,5) NOT NULL,
-  `inbound_sms_cpu` decimal(10,5) NOT NULL,
-  `outbound_sms_cpu` decimal(10,5) DEFAULT NULL,
   `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`subscriber`,`prefix`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -444,7 +490,7 @@ CREATE TABLE `price` (
 
 LOCK TABLES `price` WRITE;
 /*!40000 ALTER TABLE `price` DISABLE KEYS */;
-INSERT INTO `price` VALUES ('*','09',1,1,0.00065,0.00130,0.00000,0.11678,'0000-00-00 00:00:00'),('5951000','0',30,6,0.00065,0.00130,0.00000,0.11678,'0000-00-00 00:00:00'),('5951000','098',30,6,0.00065,0.00130,0.00000,0.11678,'0000-00-00 00:00:00');
+INSERT INTO `price` VALUES ('*','09',1,1,'0.00130','0000-00-00 00:00:00'),('*','099',1,1,'0.50000','0000-00-00 00:00:00'),('1100','098111111',0,0,'0.00000','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `price` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -516,7 +562,7 @@ CREATE TABLE `subscriber` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `account_idx` (`username`,`domain`),
   KEY `username_idx` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -525,39 +571,9 @@ CREATE TABLE `subscriber` (
 
 LOCK TABLES `subscriber` WRITE;
 /*!40000 ALTER TABLE `subscriber` DISABLE KEYS */;
-INSERT INTO `subscriber` VALUES (1,'5951003','sip.sigapy.com','1234','','e20a62e8d44e0280c85c110505034c68','1ae6e8a547562d86d4e240d1d7e942b1',NULL),(2,'5951000','sip.sigapy.com','123456','','d075344ab81ba6d080e8631e6e5792bf','f2c47654842fdee245150187abb63429',NULL),(3,'5951001','sip.sigapy.com','1234','','6e5cef1fb956cd7c1e7c8fe52c177a08','383830229620e4a6017c8018e861ab18',NULL),(4,'5951004','sip.sigapy.com','1234','','50165882cd0f2bd38deb4d82f741d014','9880ba3523ee52da40a707cea09813b7',NULL),(5,'5951005','sip.sigapy.com','1234','','57acd3255011aecb1021451194f9ad9e','58bcfec34d35cc7b1bd26f733c808be5',NULL),(6,'5951006','sip.sigapy.com','1234','','6227bb23ca895c58dac6bc0b2aa54592','315bc8049dc2d445f41ba5e1cee2102d',NULL),(7,'5951007','sip.sigapy.com','1234','','27fb5fb2d1a585dd0e9ecf37cc5dc1b2','109ba5d0cb27356fa11dd1f414ab0025',NULL),(8,'5951008','sip.sigapy.com','1234','','7eefcbb41ff8df48d58cbff0e867b2ef','b71a9dec1f1d4e2fd2e270917b161a3e',NULL),(9,'5951009','sip.sigapy.com','1234','','6a37ad9993e1afc7fed75b4d97dcefb3','181fa57150d5adde5f2d77e891b2bb90',NULL),(10,'5951010','sip.sigapy.com','1234','','08d5990ad9d6f8dd6e4c5d79f1f307ec','2be8c9e780206cd2c7b84cba287bf6f2',NULL),(11,'5951011','sip.sigapy.com','1234','','70f083ffa41079410f2b586801dfe5cb','062bd8cfc0aa37270c3e7c6f8c611601',NULL),(12,'5951012','sip.sigapy.com','1234','','ff85da5e9b5eb9db1f5f8beb5fc9a5af','5af314e6ef3f46b37b4927c2fbe8be38',NULL),(13,'5951013','sip.sigapy.com','1234','','306d891ca2241e37908682317038cea5','080584bf9800118737b44039e5b864c6',NULL),(14,'5951014','sip.sigapy.com','1234','','3176442194571b34725c35028f2a8b5c','27db1af0b3074aaef8a785ba7f459824',NULL),(15,'5951015','sip.sigapy.com','1234','','3e8da0efb86fd5069c1bcb9c675a4e44','efe2111e2edba576099e7cf86d026807',NULL),(16,'frompstn','sip.sigapy.com','dualstagepapa','','db1441fc16eb126d664c909a0b0cdfcb','8860b8296399cffecca15e7740001ebb',NULL),(17,'5951016','sip.sigapy.com','ivanpassword','','a32b3f33fb7ff5e2b45ef6e6729e5834','be1ba4202ad77fd12c48d1dd68eb3fa6',NULL),(18,'5951017','sip.sigapy.com','1234','','dea7779333b0026ca6772fa91a6fa900','ac25e32386804b697e4391054dc0105b',NULL),(19,'5951018','sip.sigapy.com','1234','','b1122fad41f83043104a40ab0ccc0f4c','ff9c17dbb6ad2d362c016702ab4fdc5e',NULL),(20,'5951019','sip.sigapy.com','1234','','42b84533002450d1a54a3ab630e3c5a0','7d91f3ffde5855cf375ce10d7e88e497',NULL),(21,'5951020','sip.sigapy.com','1234','','1b97c5bdf12a94b752dfb3578af4ef0a','993b9911a075e6833aef29ea4043077d',NULL),(22,'5951021','sip.sigapy.com','1234','','58597d29a853c8b535ac1af38ec78da3','f8ed314a44cea9f5daf7e6f3afc2a32c',NULL),(23,'5951022','sip.sigapy.com','1234','','667fd0d3316da50b2c39d2aed46a6a4b','357df54120f2396a2e0269761f7f0afd',NULL),(24,'5951023','sip.sigapy.com','1234','','c608386337afc3390120394b2964f1e7','26e02700c5d7a42484b032064c65a554',NULL),(25,'5951024','sip.sigapy.com','1234','','e295667246d5c49c97cf66b7a3197fb6','7fce214149652a7e1fbcb7ec1cf4a7cc',NULL),(26,'5951025','sip.sigapy.com','1234','','89d200a0791ff139ee25df3c419e00dd','bf87b908e91dc869f29e47e5d806c1f9',NULL),(27,'5951026','sip.sigapy.com','1234','','7ad256260d4c886669710e4e1e825acc','dd3beedbbd9644b82e12daeebe71d102',NULL),(28,'5951027','sip.sigapy.com','1234','','e253b01b3c9fc3dc315f533d520b5e23','674a05b7395a378789e68cba504046a7',NULL),(29,'5951028','sip.sigapy.com','1234','','98e579230e5dcb2ba69e2eaf54fb9ef0','35a51f6c8085bbf54d4453fa3f8a3e51',NULL),(30,'5951002','sip.sigapy.com','1234','','b7e46d5350a1559337ac46d6af5022f7','b3203624cb44a4dda3360f6c825c90ac',NULL),(38,'5951029','sip.sigapy.com','123456','carlos.ruizdiaz@gmail.com','6b08922450ce2fbad1f517fcc4aaddf1','a370b83b2610143f4eddc773a09afd78',NULL),(40,'5951030','sip.sigapy.com','123','griart@gmail.com','6ea8fd6d3c3018bc0d42f54ba2ff5361','f92bee96f0e202e334727683832a8f4e',NULL),(42,'5951031','sip.sigapy.com','123','griart@gmail.com','81699d9c21543fff2860407982ed3331','c74806dda7f4260dac186784017a6fe4',NULL),(44,'5951032','sip.sigapy.com','123','griart@gmail.com','37d95e43939cf71d8015b355d61ea7bc','2f8300c8ebeba771efebb8c4f359623a',NULL),(45,'5951033','sip.sigapy.com','123','griart@gmail.com','de4acf3df4e9bc545b68d0ba9170ed98','8e5914933aa50bfbe182c9bdfb213b49',NULL);
+INSERT INTO `subscriber` VALUES (1,'1000','cnxcc.caruizdiaz.com','1234','','afd9023714188c1e268732a0421d6793','a78ee501f52a42c346b914694af47c3f',NULL),(2,'1100','cnxcc.caruizdiaz.com','1234','','b523ae07cc2871d6b9ef802123bc132e','2bf994fed362ec43ac5dd18aedab7910',NULL);
 /*!40000 ALTER TABLE `subscriber` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `tri_setup_new_subscriber` AFTER INSERT ON `subscriber` 
-    FOR EACH ROW BEGIN
-	DECLARE v_message VARCHAR(300) DEFAULT 'Hola ';
-	DECLARE v_credit DECIMAL(10, 5);
-		
-        SET v_message = CONCAT(v_message, (SELECT firstname FROM customers WHERE subscriber = new.username), '! Te damos la bienvenida a sigapy. Si tienes alguna duda, no dudes en escribirnos un email a service@sigapy.com. Que disfrutes del servicio :)');	
-		
-	INSERT INTO smsqueue(to_subs, sms, from_number) VALUES (new.username, v_message, 'service');	
-	
-	
-	SELECT (outbound_call_cps * 60 * 5) INTO v_credit FROM price WHERE subscriber = '*' ORDER BY last_update DESC LIMIT 1;	
-	
-	INSERT INTO credit VALUES(new.username, 0, CURRENT_TIMESTAMP);
-	insert into accreditation values(NULL, new.username, v_credit, current_timestamp, null);
-	
-    END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `version`
@@ -578,118 +594,9 @@ CREATE TABLE `version` (
 
 LOCK TABLES `version` WRITE;
 /*!40000 ALTER TABLE `version` DISABLE KEYS */;
-INSERT INTO `version` VALUES ('acc',4),('missed_calls',3),('lcr_gw',2),('lcr_rule_target',1),('lcr_rule',2),('domain',2),('domain_attrs',1),('grp',2),('re_grp',1),('trusted',5),('address',5),('aliases',5),('location',5),('silo',7),('dbaliases',1),('uri',1),('speed_dial',2),('usr_preferences',2),('subscriber',6),('pdt',1),('dialog',7),('dialog_vars',1),('dispatcher',4),('dialplan',1),('presentity',3),('active_watchers',11),('watchers',3),('xcap',4),('pua',7),('rls_presentity',1),('rls_watchers',3),('imc_rooms',1),('imc_members',1),('cpl',1),('sip_trace',3),('domainpolicy',2),('carrierroute',3),('carrierfailureroute',2),('carrier_name',1),('domain_name',1),('userblacklist',1),('globalblacklist',1),('htable',2),('purplemap',1),('uacreg',1),('pl_pipes',1),('mtree',1),('mtrees',2);
+INSERT INTO `version` VALUES ('acc',4),('missed_calls',3),('lcr_gw',2),('lcr_rule_target',1),('lcr_rule',2),('domain',2),('domain_attrs',1),('grp',2),('re_grp',1),('trusted',5),('address',5),('aliases',5),('location',6),('silo',7),('dbaliases',1),('uri',1),('speed_dial',2),('usr_preferences',2),('subscriber',6),('pdt',1),('dialog',7),('dialog_vars',1),('dispatcher',4),('dialplan',1),('presentity',3),('active_watchers',11),('watchers',3),('xcap',4),('pua',7),('rls_presentity',1),('rls_watchers',3),('imc_rooms',1),('imc_members',1),('cpl',1),('sip_trace',3),('domainpolicy',2),('carrierroute',3),('carrierfailureroute',2),('carrier_name',1),('domain_name',1),('userblacklist',1),('globalblacklist',1),('htable',2),('purplemap',1),('uacreg',1),('pl_pipes',1),('mtree',1),('mtrees',2);
 /*!40000 ALTER TABLE `version` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Temporary table structure for view `vw_acc_cdrs`
---
-
-DROP TABLE IF EXISTS `vw_acc_cdrs`;
-/*!50001 DROP VIEW IF EXISTS `vw_acc_cdrs`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE TABLE `vw_acc_cdrs` (
-  `idi` tinyint NOT NULL,
-  `idb` tinyint NOT NULL,
-  `subscriber` tinyint NOT NULL,
-  `destination` tinyint NOT NULL,
-  `start_datetime` tinyint NOT NULL,
-  `duration` tinyint NOT NULL,
-  `completed` tinyint NOT NULL,
-  `reason` tinyint NOT NULL
-) ENGINE=MyISAM */;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary table structure for view `vw_calls_per_server`
---
-
-DROP TABLE IF EXISTS `vw_calls_per_server`;
-/*!50001 DROP VIEW IF EXISTS `vw_calls_per_server`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE TABLE `vw_calls_per_server` (
-  `server` tinyint NOT NULL,
-  `number_of_calls` tinyint NOT NULL
-) ENGINE=MyISAM */;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary table structure for view `vw_credits`
---
-
-DROP TABLE IF EXISTS `vw_credits`;
-/*!50001 DROP VIEW IF EXISTS `vw_credits`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE TABLE `vw_credits` (
-  `subscriber` tinyint NOT NULL,
-  `credit` tinyint NOT NULL,
-  `last_update` tinyint NOT NULL,
-  `outbound_mins` tinyint NOT NULL,
-  `inbound_mins` tinyint NOT NULL,
-  `sms` tinyint NOT NULL
-) ENGINE=MyISAM */;
-SET character_set_client = @saved_cs_client;
-
---
--- Final view structure for view `vw_acc_cdrs`
---
-
-/*!50001 DROP TABLE IF EXISTS `vw_acc_cdrs`*/;
-/*!50001 DROP VIEW IF EXISTS `vw_acc_cdrs`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_acc_cdrs` AS select `a`.`id` AS `idi`,`b`.`id` AS `idb`,`a`.`src_user` AS `subscriber`,if((`b`.`src_user` = `a`.`src_user`),`b`.`dst_ouser`,`b`.`src_user`) AS `destination`,`a`.`time` AS `start_datetime`,sec_to_time((`b`.`time` - `a`.`time`)) AS `duration`,if(((length(`a`.`dst_user`) >= 6) and (length(`a`.`dst_ouser`) >= 6) and (substr(`a`.`dst_user`,-(6)) = substr(`a`.`dst_ouser`,-(6)))),'yes','no') AS `completed`,`r`.`description` AS `reason` from ((`acc` `a` left join `acc` `b` on((`a`.`callid` = `b`.`callid`))) left join `reason` `r` on((`a`.`dst_user` = `r`.`reason`))) where ((`a`.`method` = 'INVITE') and (`b`.`method` = 'BYE') and (`a`.`sip_code` = 200) and (`b`.`sip_code` = 200) and (`a`.`src_domain` = 'cnxcc.caruizdiaz.com')) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_calls_per_server`
---
-
-/*!50001 DROP TABLE IF EXISTS `vw_calls_per_server`*/;
-/*!50001 DROP VIEW IF EXISTS `vw_calls_per_server`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_calls_per_server` AS select `acc`.`dst_domain` AS `server`,count(0) AS `number_of_calls` from `acc` where ((`acc`.`method` = 'INVITE') and `acc`.`dst_domain` in (select `route`.`ip` from `route`)) group by `acc`.`dst_domain` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_credits`
---
-
-/*!50001 DROP TABLE IF EXISTS `vw_credits`*/;
-/*!50001 DROP VIEW IF EXISTS `vw_credits`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8 */;
-/*!50001 SET character_set_results     = utf8 */;
-/*!50001 SET collation_connection      = utf8_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_credits` AS select `credit`.`subscriber` AS `subscriber`,`credit`.`credit` AS `credit`,`credit`.`last_update` AS `last_update`,sec_to_time((`credit`.`credit` / (select `price`.`outbound_call_cps` from `price` where (`price`.`subscriber` = '*')))) AS `outbound_mins`,sec_to_time((`credit`.`credit` / (select `price`.`inbound_call_cps` from `price` where (`price`.`subscriber` = '*')))) AS `inbound_mins`,floor((`credit`.`credit` / (select `price`.`outbound_sms_cpu` from `price` where (`price`.`subscriber` = '*')))) AS `sms` from `credit` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -700,4 +607,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-03-26 13:41:33
+-- Dump completed on 2014-03-27  4:51:05
