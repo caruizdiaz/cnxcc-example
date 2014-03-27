@@ -36,7 +36,7 @@ sub bill_call_on_forced_end {
 	my $f_cost	= $m->pseudoVar('$var(f_cost)');
 	my $billable	= $m->pseudoVar('$var(billable)');
 
-	return do_billing($m, $duration, $subscriber, $destination, $cps, $i_cost, $f_cost);
+	return do_billing($m, $duration, $subscriber, $destination, $cps, $i_cost, $f_cost, $billable);
 }
 
 sub bill_call {
@@ -50,7 +50,7 @@ sub bill_call {
 	my $f_cost	= $m->pseudoVar('$dlg_var(f_cost)');
 	my $billable	= $m->pseudoVar('$dlg_var(billable)');
 
-	return do_billing($m, $duration, $subscriber, $destination, $cps, $i_cost, $f_cost);
+	return do_billing($m, $duration, $subscriber, $destination, $cps, $i_cost, $f_cost, $billable);
 }
 
 sub do_billing {
@@ -61,18 +61,17 @@ sub do_billing {
 		return AAA_INTERNAL_ERROR;
 	}
 
-	
-	log(L_INFO, "$cps, $i_cost, $f_cost, $cps | $duration \n");
+	my $cost	= 0;	
 
-	my $secs_left	= $duration - $i_cost;
-	my $rounder	= $secs_left % $f_cost == 0 ? 0 : 1;
-	my $cost	= ($secs_left / $f_cost) + $rounder;
+	if ($billable ne 'no') {	
+		my $secs_left	= $duration - $i_cost;
+		my $rounder	= $secs_left % $f_cost == 0 ? 0 : 1;
+		$cost	= ($secs_left / $f_cost) + $rounder;
 
-	if ($secs_left > 0) {
-		$cost	= ($i_cost * $cps ) + ($cost * ($f_cost * $cps));
-	}
+		if ($secs_left > 0) {
+			$cost	= ($i_cost * $cps ) + ($cost * ($f_cost * $cps));
+		}	
 
-	if ($billable ne 'no') {
 		update_subscriber_credit($dbh, $subscriber, $cost);
 		log(L_INFO, "Call costed [$cost] USD, at $cps USD per sec.\n");
 	}
