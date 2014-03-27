@@ -25,22 +25,45 @@ use constant AAA_INTERNAL_ERROR => -2;
 use constant AAA_NOT_AUTHORIZED => -1;
 use constant AAA_AUTHORIZED 	=> 1;
 
+sub bill_call_on_forced_end {
+	my $m		= shift;
+	my $duration	= shift;
+	
+	my $subscriber	= $m->pseudoVar('$var(subscriber)');
+	my $destination	= $m->pseudoVar('$var(destination)');
+	my $cps		= $m->pseudoVar('$var(cost_per_second)');
+	my $i_cost	= $m->pseudoVar('$var(i_cost)');
+	my $f_cost	= $m->pseudoVar('$var(f_cost)');
+	my $billable	= $m->pseudoVar('$var(billable)');
+
+	return do_billing($m, $duration, $subscriber, $destination, $cps, $i_cost, $f_cost);
+}
+
 sub bill_call {
 	my $m		= shift;
 	my $duration	= shift;
+	
+	my $subscriber	= $m->pseudoVar('$dlg_var(subscriber)');
+	my $destination	= $m->pseudoVar('$dlg_var(destination)');
+	my $cps		= $m->pseudoVar('$dlg_var(cost_per_second)');
+	my $i_cost	= $m->pseudoVar('$dlg_var(i_cost)');
+	my $f_cost	= $m->pseudoVar('$dlg_var(f_cost)');
+	my $billable	= $m->pseudoVar('$dlg_var(billable)');
 
+	return do_billing($m, $duration, $subscriber, $destination, $cps, $i_cost, $f_cost);
+}
+
+sub do_billing {
+	my ($m, $duration, $subscriber, $destination, $cps, $i_cost, $f_cost, $billable) = @_;
 	my $dbh	= connect_to_cnxcc_db();
 
 	if (!defined $dbh) {
 		return AAA_INTERNAL_ERROR;
 	}
 
-	my $subscriber	= $m->pseudoVar('$dlg_var(subscriber)');
-	my $destination	= $m->pseudoVar('$dlg_var(destination)');
-	my $cps		= $m->pseudoVar('$dlg_var(cost_per_second)');
-	my $i_cost	= $m->pseudoVar('$dlg_var(i_cost)');
-	my $f_cost	= $m->pseudoVar('$dlg_var(f_cost)');
 	
+	log(L_INFO, "$cps, $i_cost, $f_cost, $cps | $duration \n");
+
 	my $secs_left	= $duration - $i_cost;
 	my $rounder	= $secs_left % $f_cost == 0 ? 0 : 1;
 	my $cost	= ($secs_left / $f_cost) + $rounder;
@@ -49,7 +72,7 @@ sub bill_call {
 		$cost	= ($i_cost * $cps ) + ($cost * ($f_cost * $cps));
 	}
 
-	if ($m->pseudoVar('$dlg_var(billable)') ne 'no') {
+	if ($billable ne 'no') {
 		update_subscriber_credit($dbh, $subscriber, $cost);
 		log(L_INFO, "Call costed [$cost] USD, at $cps USD per sec.\n");
 	}
@@ -98,8 +121,7 @@ sub authorize {
 		Kamailio::AVP::add("credit", "$credit");
 		Kamailio::AVP::add("initial_cost", $price->{initial_cost});
 		Kamailio::AVP::add("final_cost", $price->{final_cost});
-		Kamailio::AVP::add("i_call_cps", "$price->{inbound_call_cps}");   # inbound call cost-per-second
-		Kamailio::AVP::add("o_call_cps", "$price->{outbound_call_cps}");
+		Kamailio::AVP::add("o_call_cps", $cost);
 	}
 	elsif (!$is_call && $credit >=$cost) {
 		# maybe we want to bill MESSAGE requests. It can be done with the same logic
